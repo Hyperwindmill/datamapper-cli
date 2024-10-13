@@ -26,7 +26,6 @@ export default function from(query: Query) {
     }
     if (type) query.words.unshift(type) //when no "as" has been provided, the words are returned back to the array for further processing
     if (as) query.words.unshift(as)
-    //TODO: detect type from file extension
   } else if (type) {
     query.staticSource.type = type
   }
