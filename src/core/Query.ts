@@ -1,6 +1,11 @@
+import {Expressions} from './expressions/index.js'
+
 interface Source {
   content: string
   type: string
+}
+export interface Expression {
+  (query: Query): void
 }
 export default class Query {
   query: string = ''
@@ -11,22 +16,25 @@ export default class Query {
     this.staticSource = staticSource
     this.analize()
   }
-  private nextWord() {
+  public nextWord() {
     let word = this.words.shift()
     if (word) {
       if ((word.startsWith('"') && word.endsWith('"')) || (word.startsWith("'") && word.endsWith("'"))) {
         word = word.slice(1, -1)
       }
     }
+    //console.log('NEXT: ' + word)
     return word
   }
   private analize() {
     console.log(this.query)
-    // Match words or quoted phrases
-    this.words = this.query.match(/"[^"]*"|'[^']*'|\w+/g) || []
+    // Match words(all non ws chars) or quoted phrases
+    this.words = this.query.match(/"[^"]*"|'[^']*'|\S+/g) || []
     let word: string | undefined
     while ((word = this.nextWord())) {
-      console.log(word)
+      if (Object.hasOwn(Expressions, word)) {
+        Expressions[word](this)
+      }
     }
   }
   public run() {}

@@ -21,7 +21,7 @@ export default class Map extends Command {
     const {args, flags} = await this.parse(Map)
     const query = new Query(
       flags.query,
-      flags.source && flags.type ? {content: flags.source, type: flags.type} : undefined,
+      flags.source ? {content: flags.source, type: flags.type ?? ''} : undefined,
     )
     query.run()
   }
