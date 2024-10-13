@@ -25,7 +25,7 @@ export default class Query {
         word = word.slice(1, -1)
       }
     }
-    console.log('NEXT: ' + word)
+    //console.log('NEXT: ' + word)
     return word
   }
   private analize() {
