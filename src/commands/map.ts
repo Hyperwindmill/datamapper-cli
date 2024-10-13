@@ -6,7 +6,7 @@ export default class Map extends Command {
     //file: Args.string({description: 'file to read'}),
   }
 
-  static override description = 'describe the command here'
+  static override description = 'run a new mapping operation'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
