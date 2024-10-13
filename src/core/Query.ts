@@ -32,6 +32,7 @@ export default class Query {
     this.words = this.query.match(/"[^"]*"|'[^']*'|\S+/g) || []
     let word: string | undefined
     while ((word = this.nextWord())) {
+      word=word.toLocaleLowerCase();
       if (Object.hasOwn(Expressions, word)) {
         Expressions[word](this)
       }
