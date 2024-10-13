@@ -11,6 +11,8 @@ export default class Query {
   query: string = ''
   staticSource?: Source
   words: string[] = []
+  targetFormat: string = 'json'
+  target: string = 'output'
   constructor(query: string, staticSource?: Source) {
     this.query = query
     this.staticSource = staticSource
@@ -23,7 +25,7 @@ export default class Query {
         word = word.slice(1, -1)
       }
     }
-    //console.log('NEXT: ' + word)
+    console.log('NEXT: ' + word)
     return word
   }
   private analize() {
@@ -32,11 +34,13 @@ export default class Query {
     this.words = this.query.match(/"[^"]*"|'[^']*'|\S+/g) || []
     let word: string | undefined
     while ((word = this.nextWord())) {
-      word=word.toLocaleLowerCase();
+      word = word.toLocaleLowerCase()
       if (Object.hasOwn(Expressions, word)) {
         Expressions[word](this)
       }
     }
   }
-  public run() {}
+  public run() {
+    console.log(this)
+  }
 }
