@@ -1,5 +1,7 @@
-import { Adapters } from './adapters/index.js'
+import {Adapters} from './adapters/index.js'
 import {Expressions} from './expressions/index.js'
+import * as fs from 'fs'
+import * as pathlib from 'path'
 
 interface Source {
   content: string
@@ -30,7 +32,7 @@ export default class Query {
     return word
   }
   private analize() {
-    console.log(this.query)
+    //console.log(this.query)
     // Match words(all non ws chars) or quoted phrases
     this.words = this.query.match(/"[^"]*"|'[^']*'|\S+/g) || []
     let word: string | undefined
@@ -42,15 +44,24 @@ export default class Query {
     }
   }
   public run() {
-    if(!this.staticSource) throw new Error("No source is defined");
-    const parser=Adapters[this.staticSource.type.toLocaleLowerCase()];
-    if(!parser) throw new Error('No adapter available for '+this.staticSource.type);
-    const from=parser.decode(this.staticSource.content);
-    if(!from) throw new Error(this.staticSource.type+' adapter was not able to read source content');
-    const encoder=Adapters[this.targetFormat.toLocaleLowerCase()];
-    if(!encoder) throw new Error('No adapter available for '+this.targetFormat);
-    const to=encoder.encode(from);
-    if(!from) throw new Error(this.targetFormat+' adapter was not able to encode your source content');
-    console.log(to);
+    if (!this.staticSource) throw new Error('No source is defined')
+    const parser = Adapters[this.staticSource.type.toLocaleLowerCase()]
+    if (!parser) throw new Error('No adapter available for ' + this.staticSource.type)
+    const from = parser.decode(this.staticSource.content)
+    if (!from) throw new Error(this.staticSource.type + ' adapter was not able to read source content')
+    const encoder = Adapters[this.targetFormat.toLocaleLowerCase()]
+    if (!encoder) throw new Error('No adapter available for ' + this.targetFormat)
+    const to = encoder.encode(from)
+    if (!from) throw new Error(this.targetFormat + ' adapter was not able to encode your source content')
+    if (this.target === 'stdout') {
+      console.log(to)
+    } else {
+      const extension = pathlib.extname(this.target)
+      if (!extension) {
+        this.target += '.' + encoder.extension
+      }
+      fs.writeFileSync(this.target, to)
+      console.log('Outcome written to ' + this.target)
+    }
   }
 }
