@@ -1,3 +1,4 @@
+import { Adapters } from './adapters/index.js'
 import {Expressions} from './expressions/index.js'
 
 interface Source {
@@ -41,6 +42,15 @@ export default class Query {
     }
   }
   public run() {
-    console.log(this)
+    if(!this.staticSource) throw new Error("No source is defined");
+    const parser=Adapters[this.staticSource.type.toLocaleLowerCase()];
+    if(!parser) throw new Error('No adapter available for '+this.staticSource.type);
+    const from=parser.decode(this.staticSource.content);
+    if(!from) throw new Error(this.staticSource.type+' adapter was not able to read source content');
+    const encoder=Adapters[this.targetFormat.toLocaleLowerCase()];
+    if(!encoder) throw new Error('No adapter available for '+this.targetFormat);
+    const to=encoder.encode(from);
+    if(!from) throw new Error(this.targetFormat+' adapter was not able to encode your source content');
+    console.log(to);
   }
 }
