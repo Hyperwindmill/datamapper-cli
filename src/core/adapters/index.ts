@@ -12,7 +12,12 @@ export const Adapters: Record<string, Adapter> = {
   },
   xml: {
     encode: (data) => {
-      const builder = new XMLBuilder({ignoreAttributes: false, arrayNodeName: 'test', format: true}) //TODO implement adapter options
+      const builder = new XMLBuilder({
+        ignoreAttributes: false,
+        arrayNodeName: 'test',
+        format: true,
+        attributeNamePrefix: '$',
+      }) //TODO implement adapter options
       return builder.build({root: data}) //TODO: define root in options
     },
     decode: (content) => {
