@@ -1,5 +1,5 @@
 import {Args, Command, Flags} from '@oclif/core'
-import Query from '../core/Query.js'
+import {Query} from '@datamapper/transform-by-query'
 
 export default class Map extends Command {
   static override args = {
@@ -19,10 +19,7 @@ export default class Map extends Command {
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(Map)
-    const query = new Query(
-      flags.query,
-      flags.source ? {content: flags.source, type: flags.type ?? ''} : undefined,
-    )
+    const query = new Query(flags.query, flags.source ? {content: flags.source, type: flags.type ?? ''} : undefined)
     query.run()
   }
 }
