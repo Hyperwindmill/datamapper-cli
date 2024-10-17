@@ -26,7 +26,8 @@
     "oclif": "^4",
     "shx": "^0.3.4",
     "ts-node": "^10",
-    "typescript": "^5"
+    "typescript": "^5",
+    "nx": "20.0.1"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -67,5 +68,6 @@
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "nx": {}
 }

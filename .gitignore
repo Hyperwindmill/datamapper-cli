@@ -12,3 +12,8 @@ oclif.manifest.json
 yarn.lock
 pnpm-lock.yaml
 
+
+
+
+.nx/cache
+.nx/workspace-data
